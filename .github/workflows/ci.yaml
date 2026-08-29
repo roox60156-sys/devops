@@ -1,0 +1,27 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build vote image into minikube docker
+        run: |
+          TAG=$(echo $GITHUB_SHA | cut -c1-7)
+          eval $(minikube -p minikube docker-env)
+          docker build -t vote:$TAG ./app/vote
+
+      - name: Deploy with Helm
+        run: |
+          TAG=$(echo $GITHUB_SHA | cut -c1-7)
+          helm upgrade --install voting-app ./chart \
+            --set vote.image=vote:$TAG \
+            --set vote.pullPolicy=Never
+          kubectl rollout status deployment/vote
+          kubectl get pods -l app=vote
