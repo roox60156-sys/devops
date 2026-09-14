@@ -3,6 +3,13 @@ vote:
   pullPolicy: IfNotPresent
   replicas: 2
   port: 80
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
 result:
   image: dockersamples/examplevotingapp_result
   replicas: 1
