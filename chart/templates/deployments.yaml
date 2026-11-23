@@ -21,6 +21,9 @@ spec:
           imagePullPolicy: {{ .Values.vote.pullPolicy }}
           ports:
             - containerPort: {{ .Values.vote.port }}
+          envFrom:
+            - configMapRef:
+                name: vote-options
           resources:
             requests:
               cpu: {{ .Values.vote.resources.requests.cpu }}

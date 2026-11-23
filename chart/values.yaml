@@ -3,6 +3,8 @@ vote:
   pullPolicy: IfNotPresent
   replicas: 2
   port: 80
+  optionA: Cats
+  optionB: Dogs
   resources:
     requests:
       cpu: 50m
